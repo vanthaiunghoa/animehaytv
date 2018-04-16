@@ -1,0 +1,167 @@
+<resources>
+  <dimen name="activity_horizontal_margin">
+    35.56dp
+  </dimen>
+  <dimen name="activity_vertical_margin">
+    35.56dp
+  </dimen>
+  <dimen name="nav_header_vertical_spacing">
+    35.56dp
+  </dimen>
+  <dimen name="nav_header_height">
+    355.56dp
+  </dimen>
+  <dimen name="fab_margin">
+    35.56dp
+  </dimen>
+  <dimen name="cardview_trang_heigh">
+    88.89dp
+  </dimen>
+  <dimen name="dp0">
+    0.0dp
+  </dimen>
+  <dimen name="dp1">
+    2.22dp
+  </dimen>
+  <dimen name="dp2">
+    4.44dp
+  </dimen>
+  <dimen name="dp3">
+    6.67dp
+  </dimen>
+  <dimen name="dp4">
+    8.89dp
+  </dimen>
+  <dimen name="dp5">
+    11.11dp
+  </dimen>
+  <dimen name="dp6">
+    13.33dp
+  </dimen>
+  <dimen name="dp7">
+    15.56dp
+  </dimen>
+  <dimen name="dp8">
+    17.78dp
+  </dimen>
+  <dimen name="dp9">
+    20.0dp
+  </dimen>
+  <dimen name="dp10">
+    22.22dp
+  </dimen>
+  <dimen name="dp11">
+    24.44dp
+  </dimen>
+  <dimen name="dp12">
+    26.67dp
+  </dimen>
+  <dimen name="dp15">
+    33.33dp
+  </dimen>
+  <dimen name="dp20">
+    44.44dp
+  </dimen>
+  <dimen name="dp24">
+    53.33dp
+  </dimen>
+  <dimen name="dp25">
+    55.56dp
+  </dimen>
+  <dimen name="dp30">
+    66.67dp
+  </dimen>
+  <dimen name="dp35">
+    77.78dp
+  </dimen>
+  <dimen name="dp40">
+    88.89dp
+  </dimen>
+  <dimen name="dp48">
+    106.67dp
+  </dimen>
+  <dimen name="dp50">
+    111.11dp
+  </dimen>
+  <dimen name="dp56">
+    124.44dp
+  </dimen>
+  <dimen name="dp60">
+    133.33dp
+  </dimen>
+  <dimen name="dp70">
+    155.56dp
+  </dimen>
+  <dimen name="dp72">
+    160.0dp
+  </dimen>
+  <dimen name="dp80">
+    177.78dp
+  </dimen>
+  <dimen name="dp100">
+    222.22dp
+  </dimen>
+  <dimen name="dp120">
+    266.67dp
+  </dimen>
+  <dimen name="dp122">
+    271.11dp
+  </dimen>
+  <dimen name="dp130">
+    288.89dp
+  </dimen>
+  <dimen name="dp150">
+    333.33dp
+  </dimen>
+  <dimen name="dp180">
+    400.0dp
+  </dimen>
+  <dimen name="dp200">
+    444.44dp
+  </dimen>
+  <dimen name="dp220">
+    488.89dp
+  </dimen>
+  <dimen name="dp230">
+    511.11dp
+  </dimen>
+  <dimen name="dp250">
+    555.56dp
+  </dimen>
+  <dimen name="sp8">
+    17.78sp
+  </dimen>
+  <dimen name="sp9">
+    20.0sp
+  </dimen>
+  <dimen name="sp10">
+    22.22sp
+  </dimen>
+  <dimen name="sp11">
+    24.44sp
+  </dimen>
+  <dimen name="sp12">
+    26.67sp
+  </dimen>
+  <dimen name="sp13">
+    28.89sp
+  </dimen>
+  <dimen name="sp14">
+    31.11sp
+  </dimen>
+  <dimen name="sp15">
+    33.33sp
+  </dimen>
+  <dimen name="sp16">
+    35.56sp
+  </dimen>
+  <dimen name="sp18">
+    40.0sp
+  </dimen>
+  <dimen name="sp20">
+    44.44sp
+  </dimen>
+  <dimen name="sp30">
+    66.67sp
+  </dimen>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_phim"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dp5"
+    android:paddingLeft="@dimen/dp3"
+    android:paddingRight="@dimen/dp3"
+    android:paddingTop="@dimen/dp3">
+
+    <ImageView
+        android:id="@+id/img_cardview_phim"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp200"
+        android:layout_marginBottom="@dimen/dp3"
+        android:background="@color/gray"
+        android:src="@drawable/default_fail_img" />
+
+    <TextView
+        android:id="@+id/tv_tenphim_cardview_phim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp3"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Sample Title"
+        android:textSize="@dimen/sp14" />
+
+    <TextView
+        android:id="@+id/tv_tap_cardview_phim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp3"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Tap 1"
+        android:textSize="@dimen/sp11" />
+
+</LinearLayout>

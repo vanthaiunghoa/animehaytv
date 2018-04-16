@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_phimmoicapnhat"
+            android:title="Phim Mới Cập Nhật" />
+        <item
+            android:id="@+id/nav_bxhn"
+            android:title="Bảng Xếp Hạng Ngày" />
+
+        <item
+            android:id="@+id/nav_anime"
+            android:title="Anime" />
+
+        <item
+            android:id="@+id/nav_cnanimation"
+            android:title="CN Animation" />
+
+        <item
+            android:id="@+id/nav_hoathinh"
+            android:title="Hoạt Hình" />
+
+        <item
+            android:id="@+id/nav_namphathanh"
+            android:title="Năm Phát Hành" />
+
+
+        <item
+            android:id="@+id/nav_yeuthich"
+            android:title="Yêu Thích" />
+
+
+    </group>
+
+    <item android:title="#About">
+        <menu>
+            <item
+                android:id="@+id/nav_taikhoan"
+                android:title="Tài khoản" />
+
+            <item
+                android:id="@+id/nav_lienhe"
+                android:title="Liên hệ" />
+            <item
+                android:id="@+id/nav_moreapp"
+                android:title="More App" />
+            <item
+                android:id="@+id/nav_rateapp"
+                android:title="Rate App" />
+
+        </menu>
+    </item>
+
+</menu>

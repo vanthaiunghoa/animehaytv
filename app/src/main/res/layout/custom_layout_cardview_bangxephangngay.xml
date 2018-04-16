@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_phim_bxhn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp10"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp5"
+    android:paddingLeft="@dimen/dp3"
+    android:paddingRight="@dimen/dp3"
+    android:paddingTop="@dimen/dp3">
+
+    <ImageView
+        android:id="@+id/img_cardview_phim_bxhn"
+        android:layout_width="@dimen/dp80"
+        android:layout_height="@dimen/dp100"
+        android:layout_marginBottom="@dimen/dp3"
+        android:background="@color/gray"
+        android:src="@drawable/default_fail_img" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_marginRight="@dimen/dp5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_tenphim_cardview_phim_bxhn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp3"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingBottom="@dimen/dp10"
+            android:text="Sample Title"
+            android:textSize="@dimen/sp14"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_luotxem_cardview_phim_bxhn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp3"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="1000 luot xem"
+            android:textSize="@dimen/sp11"
+            android:textStyle="italic" />
+    </LinearLayout>
+</LinearLayout>

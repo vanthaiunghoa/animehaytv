@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "559106738621",
+    "firebase_url": "https://anime-vietsub.firebaseio.com",
+    "project_id": "anime-vietsub",
+    "storage_bucket": "anime-vietsub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559106738621:android:6e5b62d10b3186b5",
+        "android_client_info": {
+          "package_name": "com.ani.anivn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559106738621-61nlgv0740bunt35eg51jio6dg3l4lfp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSjdDcRRv_NOieCrSAl-Hw8cczL9a5_Oo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
