@@ -10,6 +10,15 @@
         android:layout_height="200dp"></FrameLayout>
 
     <TextView
+        android:id="@+id/tv_chontap_episode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text=""
+        android:textColor="@color/text_name_star" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp5"

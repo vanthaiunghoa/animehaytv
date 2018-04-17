@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ani.anivn.Login.Login_Fragment;
 import com.ani.anivn.Model.Login_Model;
 import com.ani.anivn.Model.YeuThich_Model;
 import com.ani.anivn.R;
@@ -85,7 +87,7 @@ public class Signup_Fragment extends Fragment {
                   FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                   fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
                                       .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                       addToBackStack("Login_Fragment")
+                                       .addToBackStack("Login_Fragment")
                                         .commit();
             }
         });

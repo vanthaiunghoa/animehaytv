@@ -33,11 +33,13 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
     Context context;
     AppCompatActivity activity;
     ProgressBar progressBar;
+    TextView tv_chontap_episode;
 
-    public Episode_Adapter(Context context, List<Episode_Model> itemsList, ProgressBar progressBar) {
+    public Episode_Adapter(Context context, List<Episode_Model> itemsList, ProgressBar progressBar, TextView tv_chontap_episode) {
         this.itemsList = itemsList;
         this.context = context;
         this.progressBar = progressBar;
+        this.tv_chontap_episode = tv_chontap_episode;
     }
 
     @Override
@@ -59,6 +61,8 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
 
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.bringToFront();
+
+                tv_chontap_episode.setText("Đang chọn tập : " + film.getTen_tap());
 
                 holder.cardview_trang.setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
 

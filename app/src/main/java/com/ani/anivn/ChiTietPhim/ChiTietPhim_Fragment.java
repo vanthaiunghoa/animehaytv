@@ -28,6 +28,9 @@ import com.ani.anivn.Model.DaoSession;
 import com.ani.anivn.Model.YeuThich_Model;
 import com.ani.anivn.Model.YeuThich_ModelDao;
 import com.ani.anivn.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 
 import es.dmoral.toasty.Toasty;
@@ -64,6 +67,8 @@ public class ChiTietPhim_Fragment extends Fragment {
         activity = (AppCompatActivity) view.getContext();
 
         GetBundle();
+
+        Admod();
 
         initSQL();
 
@@ -162,6 +167,33 @@ public class ChiTietPhim_Fragment extends Fragment {
             }
         });
 
+    }
+
+    private void Admod() {
+        try {
+            final InterstitialAd mInterstitialAd = new InterstitialAd(getContext());
+            mInterstitialAd.setAdUnitId(getResources().getString(R.string.ads_interstitial));
+            AdRequest adRequestInter = new AdRequest.Builder().build();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdClosed() {
+
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+
+                }
+            });
+            mInterstitialAd.loadAd(adRequestInter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void SetItem() {

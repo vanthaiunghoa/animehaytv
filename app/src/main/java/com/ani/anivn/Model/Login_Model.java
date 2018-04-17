@@ -22,12 +22,7 @@ public class Login_Model {
   
     public Login_Model() {
     }
-    public Long getIdsql() {
-        return this.idsql;
-    }
-    public void setIdsql(Long idsql) {
-        this.idsql = idsql;
-    }
+
     public String getIdfirebase() {
         return this.idfirebase;
     }

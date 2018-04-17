@@ -26,6 +26,9 @@ import com.ani.anivn.Model.YeuThich_Model;
 import com.ani.anivn.Model.YeuThich_ModelDao;
 import com.ani.anivn.R;
 import com.ani.anivn.YeuThich.Adapter.YeuThich_Adapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +52,21 @@ public class YeuThich_Fragment extends Fragment {
     List<YeuThich_Model> listItem;
     YeuThich_Adapter adapter;
 
+    DatabaseReference ref;
+    FirebaseAuth auth;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         view = inflater.inflate(R.layout.fragment_yeuthich, container, false);
 
-        AppCompatActivity activity=(AppCompatActivity)view.getContext();
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
         activity.getSupportActionBar().setTitle("Yêu Thích");
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+        ref = FirebaseDatabase.getInstance().getReference();
 
         FindViewById();
 
@@ -129,13 +139,16 @@ public class YeuThich_Fragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                yeuthich_dao.deleteAll();
-                                listItem.clear();
+                                for (int i = listItem.size() - 1; i >= 0; i--) {
+                                    yeuthich_dao.delete(listItem.get(i));
+                                    listItem.remove(i);
+                                }
+
                                 adapter.notifyDataSetChanged();
 
                                 tv_empty_yeuthich.setVisibility(View.VISIBLE);
 
-                                Toasty.success(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT,true).show();
+                                Toasty.success(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT, true).show();
 
                             }
                         });

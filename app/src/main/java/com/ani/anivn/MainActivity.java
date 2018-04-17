@@ -34,8 +34,12 @@ import com.ani.anivn.Login.Login_Fragment;
 import com.ani.anivn.NamPhatHanh.NamPhatHanh_Fragment;
 import com.ani.anivn.PhimMoiCapNhat.PhimMoiCapNhat_Fragment;
 import com.ani.anivn.Signup.Signup_Fragment;
+import com.ani.anivn.TaiKhoan.TaiKhoan_Fragment;
 import com.ani.anivn.TimKiem.TimKiem_Fragment;
 import com.ani.anivn.YeuThich.YeuThich_Fragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     NavigationView navigationView;
+    DatabaseReference ref;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+        ref = FirebaseDatabase.getInstance().getReference();
 
         setSupportActionBar(toolbar);
 
@@ -271,11 +280,19 @@ public class MainActivity extends AppCompatActivity
             startActivity(browserIntent123);
 
         } else if (id == R.id.nav_taikhoan) {
-            Signup_Fragment signup_fragment = new Signup_Fragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame, signup_fragment, "Signup_Fragment")
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            if (auth.getCurrentUser() != null) {
+                TaiKhoan_Fragment taiKhoan_fragment = new TaiKhoan_Fragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, taiKhoan_fragment, "TaiKhoan_Fragment")
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else {
+                Login_Fragment login_fragment = new Login_Fragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, login_fragment, "Login_Fragment")
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
         }
 
         drawer.closeDrawer(GravityCompat.START);

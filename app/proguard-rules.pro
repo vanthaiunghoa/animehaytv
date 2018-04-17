@@ -350,7 +350,7 @@ public protected *;
 -dontwarn org.joda.time.**
 -dontwarn org.shaded.apache.**
 -dontwarn org.ietf.jgss.**
-
+-dontwarn com.google.gms.**
 -keep class com.shaded.fasterxml.jackson.** { *; }
 -keep class !com.my.package.** { *; }
 # Add this global rule
@@ -362,3 +362,4 @@ public protected *;
 -keepclassmembers class com.yourcompany.models.** {
 *;
 }
+

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.ani.anivn.Config.Get_Episode;
 import com.ani.anivn.Episode.Adapter.Episode_Adapter;
@@ -32,6 +33,7 @@ public class Episode_Fragment extends Fragment {
     View view;
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    TextView tv_chontap_episode;
 
     Episode_Adapter adapter;
     List<Episode_Model> listItem;
@@ -58,6 +60,7 @@ public class Episode_Fragment extends Fragment {
     private void FindViewById() {
         progressBar = view.findViewById(R.id.progressbar_episode);
         recyclerView = view.findViewById(R.id.recyclerview_episode);
+        tv_chontap_episode = view.findViewById(R.id.tv_chontap_episode);
 
         get_episode = new Get_Episode(getContext());
     }
@@ -112,12 +115,13 @@ public class Episode_Fragment extends Fragment {
     private void SetupRecyclerview() {
 
         recyclerView.setHasFixedSize(true);
-        adapter = new Episode_Adapter(getContext(), listItem, progressBar);
+        adapter = new Episode_Adapter(getContext(), listItem, progressBar,tv_chontap_episode);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7, GridLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_nothing, menu);
