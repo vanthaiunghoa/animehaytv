@@ -73,6 +73,19 @@ public class Signup_Fragment extends Fragment {
         link_login = view.findViewById(R.id.link_login);
         progressBar = view.findViewById(R.id.progressBar_signup);
 
+          link_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 input_email.setText("");
+                 input_password.setText("");
+                                                
+                  FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                  fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
+                                      .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                       addToBackStack("Login_Fragment")
+                                        .commit();
+            }
+        });
 
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,16 +134,14 @@ public class Signup_Fragment extends Fragment {
 
                                                 Toasty.success(getContext(), "Đăng kí thành công !", Toast.LENGTH_SHORT, true).show();
 
-                                                Login_Model login_model = new Login_Model();
-                                                login_model.setEmail(email);
-                                                login_model.setIdfirebase(auth.getCurrentUser().getUid());
-
-                                                List<YeuThich_Model> listdata = new ArrayList<YeuThich_Model>();
-
-
-                                                ref.child("users").child(auth.getCurrentUser().getUid()).setValue(login_model);
-
-                                                //ref.child("savedata").child(auth.getCurrentUser().getUid()).setValue(listdata);
+                                                input_email.setText("");
+                                                input_password.setText("");
+                                                
+                                                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                                                fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
+                                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                                        .addToBackStack("Login_Fragment")
+                                                        .commit();
 
                                             } else {
 
