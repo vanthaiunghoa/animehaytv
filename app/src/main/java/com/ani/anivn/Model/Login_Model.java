@@ -8,19 +8,18 @@ import org.greenrobot.greendao.annotation.Generated;
  * Created by Admin on 4/16/2018.
  */
 
-@Entity
 public class Login_Model {
-    @Id(autoincrement = true)
-    private Long idsql;
+
     private String idfirebase;
     private String email;
-    @Generated(hash = 37151470)
-    public Login_Model(Long idsql, String idfirebase, String email) {
-        this.idsql = idsql;
-        this.idfirebase = idfirebase;
+    private String password;
+  
+    public Login_Model(String idfirebase, String email,String password) {
+       this.idfirebase = idfirebase;
         this.email = email;
+        this.password=password;
     }
-    @Generated(hash = 1225402378)
+  
     public Login_Model() {
     }
     public Long getIdsql() {
@@ -40,6 +39,13 @@ public class Login_Model {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+     public String getPassword() {
+        return this.password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
