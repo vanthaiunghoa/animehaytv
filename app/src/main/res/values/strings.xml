@@ -21,4 +21,6 @@
     <string name="rate_title">Rate Us !</string>
     <string name="rate_message">How do you like our app ? </string>
 
+    <string name="luuy_taikhoan">Lưu ý : Tài khoản email này sẽ được dùng để bạn lưu tất cả phim yêu thích khi bạn muốn thay đổi điện thoại .</string>
+    
 </resources>
