@@ -126,12 +126,8 @@ public class DbOpenHelper extends DaoMaster.OpenHelper {
             case 2:
                 // Log.d("TAG"," 2 ADD COLUMN");
 
-                db.execSQL("CREATE TABLE IF NOT EXISTS " + " LOGIN__MODEL ( " + //
-                        " _id INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: idsql
-                        " IDFIREBASE TEXT," + // 1: idfirebase
-                        " EMAIL TEXT);"); // 2: email
-
-            case 3:
+             
+          //  case 3:
 //                Log.d("TAG","3 ADD COLUMN");
 //            case 4:
 //                Log.d("TAG"," 4 ADD COLUMN");
