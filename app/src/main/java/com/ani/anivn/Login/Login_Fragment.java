@@ -40,6 +40,9 @@ public class Login_Fragment extends Fragment {
 
     FirebaseAuth auth;
     DatabaseReference ref;
+    
+     DaoSession daoSession;
+    Login_ModelDao login_dao;
 
     @Nullable
     @Override
@@ -51,10 +54,18 @@ public class Login_Fragment extends Fragment {
         ref = FirebaseDatabase.getInstance().getReference();
 
         activity = (AppCompatActivity) view.getContext();
+        activity.getSupportActionBar().setTitle("Đăng Nhập Tài Khoản");
 
+        initSQL();
+        
         FindViewById();
 
         return view;
+    }
+    
+      private void initSQL() {
+        daoSession = ((SqlApp) getActivity().getApplication()).getDaoSession();
+        login_dao = daoSession.getLogin_ModelDao();
     }
 
     private void FindViewById() {
@@ -63,7 +74,24 @@ public class Login_Fragment extends Fragment {
         btn_login = view.findViewById(R.id.btn_login);
         link_signup = view.findViewById(R.id.link_signup);
         progressBar = view.findViewById(R.id.progressBar_login);
+        
+         input_email.setText("");
+         input_password.setText("");
 
+         link_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 input_email.setText("");
+                 input_password.setText("");
+                                                
+                  FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                  fragmentTransaction.replace(R.id.content_frame, new Signup_Fragment(), "Signup_Fragment")
+                                      .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                       addToBackStack("Signup_Fragment")
+                                        .commit();
+            }
+        });
+        
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,12 +122,28 @@ public class Login_Fragment extends Fragment {
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
-                                progressBar.setVisibility(View.GONE);
+                                
                                 if (task.isSuccessful()) {
 
+                                    String idfirebase=auth.getCurrentUser().getUid();
+                                    
+                                    Login_Model login_model = new Login_Model();
+                                     login_model.setEmail(email);
+                                     login_model.setIdfirebase(idfirebase);
+                                     login_model.setPassword(password);
+                                    
+                                    ref.child("users").child(idfirebase).setValue(login_model);
+                                    
+                                    login_dao.deleteAll();
+                                    login_dao.save(login_model);
+                                    
+                                    progressBar.setVisibility(View.GONE);
+                                    
                                     Toasty.success(getContext(), "Đăng nhập thành công !", Toast.LENGTH_SHORT, true).show();
 
                                 } else {
+                                    
+                                    progressBar.setVisibility(View.GONE);
 
                                     Toasty.success(getContext(), "Đăng nhập thất bại !", Toast.LENGTH_SHORT, true).show();
 
