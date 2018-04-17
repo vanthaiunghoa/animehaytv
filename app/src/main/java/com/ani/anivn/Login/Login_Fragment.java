@@ -40,9 +40,7 @@ public class Login_Fragment extends Fragment {
 
     FirebaseAuth auth;
     DatabaseReference ref;
-    
-     DaoSession daoSession;
-    Login_ModelDao login_dao;
+
 
     @Nullable
     @Override
@@ -56,18 +54,11 @@ public class Login_Fragment extends Fragment {
         activity = (AppCompatActivity) view.getContext();
         activity.getSupportActionBar().setTitle("Đăng Nhập Tài Khoản");
 
-        initSQL();
-        
         FindViewById();
 
         return view;
     }
-    
-      private void initSQL() {
-        daoSession = ((SqlApp) getActivity().getApplication()).getDaoSession();
-        login_dao = daoSession.getLogin_ModelDao();
-    }
-
+ 
     private void FindViewById() {
         input_email = view.findViewById(R.id.input_email);
         input_password = view.findViewById(R.id.input_password);
@@ -133,10 +124,7 @@ public class Login_Fragment extends Fragment {
                                      login_model.setPassword(password);
                                     
                                     ref.child("users").child(idfirebase).setValue(login_model);
-                                    
-                                    login_dao.deleteAll();
-                                    login_dao.save(login_model);
-                                    
+                                     
                                     progressBar.setVisibility(View.GONE);
                                     
                                     Toasty.success(getContext(), "Đăng nhập thành công !", Toast.LENGTH_SHORT, true).show();
