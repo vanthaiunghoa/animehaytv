@@ -73,6 +73,9 @@ public class Signup_Fragment extends Fragment {
         link_login = view.findViewById(R.id.link_login);
         progressBar = view.findViewById(R.id.progressBar_signup);
 
+         input_email.setText("");
+         input_password.setText("");
+        
           link_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
