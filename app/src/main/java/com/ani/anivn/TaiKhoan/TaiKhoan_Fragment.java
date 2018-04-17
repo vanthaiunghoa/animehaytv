@@ -30,6 +30,7 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         view = inflater.inflate(R.layout.fragment_taikhoan, container, false);
 
          //Get Firebase auth instance
@@ -80,6 +81,9 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
         } else if (id == R.id.tv_taikhoan_upload) {
             
             if(auth.getCurrentUser() != null){
+                
+                 ref.child("savedata").child(auth.getCurrentUser().getUid()).setValue(null);
+                
                 List<YeuThich_Model> listYeuThich= new ArrayList<>();
                  listYeuThich = yeuthich_dao.queryBuilder().orderAsc(YeuThich_ModelDao.Properties.Idsql).build().list();
                 if(listYeuThich . size() > 0){
@@ -103,26 +107,51 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
              
         } else if (id == R.id.tv_taikhoan_download) {
             
-//              if(auth.getCurrentUser() != null){
-//                 List<YeuThich_Model> listYeuThich= new ArrayList<>();
-//                  listYeuThich = yeuthich_dao.queryBuilder().orderAsc(YeuThich_ModelDao.Properties.Idsql).build().list();
-//                 if(listYeuThich . size() > 0){
-                    
-//                     ref.child("savedata").child(auth.getCurrentUser().getUid()).setValue(listdata);
-                    
-//                     Toasty.success(getContext(), "Upload Phim Yêu Thích lên server !", Toast.LENGTH_SHORT, true).show();
-                    
-//                 }else{
-//                     Toasty.error(getContext(), "Chưa có bất kì phim nào trong mục yêu thích !", Toast.LENGTH_SHORT, true).show();
-//                 }
-//             }else{
-//                  Toasty.error(getContext(), "Bạn cần phải đăng nhập tài khoản !", Toast.LENGTH_SHORT, true).show();
-//                  FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-//                   fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
-//                                       .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                                        addToBackStack("Login_Fragment")
-//                                         .commit();
-//             }
+             if(auth.getCurrentUser() != null){
+               
+                   ref.child("savedata").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener(){
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot){
+                          /* This method is called once with the initial value and again whenever data at this location is updated.*/
+                          long count=dataSnapshot.getChildrenCount();
+                          Log.d(TAG,"no of children: "+value);
+
+                           if(count > 0){
+                          GenericTypeIndicator<List<YeuThich_Model>> genericTypeIndicator =new GenericTypeIndicator<List<YeuThich_Model>>(){};
+
+                          List<YeuThich_Model> listYeuThich=dataSnapshot.getValue(genericTypeIndicator);
+                           for(int i=0; i<listYeuThich.size(); i++ ){
+                               YeuThich_Model y = listYeuThich.get(i);
+                               YeuThich_Model check = yeuthich_dao.queryBuilder().where(YeuThich_ModelDao.Properties.Tenphim.eq(y.getTenphim())).build().uniqueOrThrow();
+                                if (check == null) {
+                                    yeuthich_dao.save(y);
+                                }
+                           }
+                               
+                           Toasty.success(getContext(), "Đã lưu phim !", Toast.LENGTH_SHORT, true).show(); 
+                            
+                           }else{
+                            Toasty.error(getContext(), "Bạn chưa upload bất kì phim nào lên server !", Toast.LENGTH_SHORT, true).show();
+                           }
+                          
+                       }
+
+                       @Override
+                       public void onCancelled(DatabaseError error){
+                          // Failed to read value
+                          Log.w(TAG,"Failed to read value.",error.toException());
+                           Toasty.success(getContext(), "Lỗi không thể lấy dữ liệu !", Toast.LENGTH_SHORT, true).show(); 
+                       }
+                    });
+                 
+            }else{
+                 Toasty.error(getContext(), "Bạn cần phải đăng nhập tài khoản !", Toast.LENGTH_SHORT, true).show();
+                 FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                  fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
+                                      .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                       addToBackStack("Login_Fragment")
+                                        .commit();
+            }
         }
     }
 }
