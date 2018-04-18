@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dp5">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp10"
+        android:text="DOI DONG TAM SU"
+        android:textColor="@color/text_empty"
+        android:textSize="@dimen/sp20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - App hoàn toàn free . Vì vậy app sẽ có quảng cáo để duy trì và phát triển app tốt hơn." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Tại sao xem phim cả tiếng thỳ được mà quảng cáo có 1 2 giây các bạn lại không chờ được ạ. Quảng cáo cũng không có nhiều." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Không có bất kì ai có thời gian rảnh để bỏ công sức rồi phát triển app cả ." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Bọn mình vẫn đang nỗ lực hết sức để ghi nhận đống góp của các bạn phát triển app tốt hơn . " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Nếu các bạn thực sự thích app và muốn app phát triển hơn thỳ các bạn có thể bỏ ra 1 giây để rate 5* cho app ạ. " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Các bạn muốn ủng hộ bọn mình phát triển app thỳ có thể click 1-2 cái quảng cáo hộ bọn mình là được rồi ạ " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - App có lỗi gì thỳ các bạn có thể chat vào  facebook cho bọn mình để bọn mình fix sớm ạ.  " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Mong các bạn hiểu và thông cảm nếu như app có lỗi ạ ." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:text=" - Cảm ơn các bạn đã ủng hộ bọn mình ." />
+</LinearLayout>
