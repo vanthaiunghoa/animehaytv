@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -133,11 +136,12 @@ public class Login_Fragment extends Fragment {
 
                                     Toasty.success(getContext(), "Đăng nhập thành công !", Toast.LENGTH_SHORT, true).show();
 
-                                    clearStack();
+                                   // clearStack();
 
                                     FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                                     fragmentTransaction.replace(R.id.content_frame, new TaiKhoan_Fragment(), "TaiKhoan_Fragment")
                                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                            .addToBackStack("TaiKhoan_Fragment")
                                             .commit();
 
                                 } else {
@@ -174,5 +178,23 @@ public class Login_Fragment extends Fragment {
                 }
             }
         }
+
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_nothing, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

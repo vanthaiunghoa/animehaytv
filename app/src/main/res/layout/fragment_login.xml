@@ -65,6 +65,7 @@
                 android:background="@color/colorAccent"
                 android:layout_marginBottom="@dimen/dp24"
                 android:layout_marginTop="@dimen/dp24"
+                android:textColor="@color/white"
                 android:padding="@dimen/dp12"
                 android:text="Login" />
 

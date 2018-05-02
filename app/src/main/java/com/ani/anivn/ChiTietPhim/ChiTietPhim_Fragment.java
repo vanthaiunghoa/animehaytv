@@ -33,6 +33,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
+
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -46,7 +48,7 @@ public class ChiTietPhim_Fragment extends Fragment {
     Bundle bundle;
     ChiTietPhim_Model chiTietPhim_model;
     String linkthongtinphim = "";
-    String toolbartitle="";
+    String toolbartitle = "";
 
     ImageView img_hinhanh, img_anhnen;
     TextView tv_xemphim, tv_thich, tv_bothich, tv_namphathanh, tv_theloai, tv_thoiluong, tv_noidung;
@@ -68,7 +70,7 @@ public class ChiTietPhim_Fragment extends Fragment {
 
         GetBundle();
 
-        Admod();
+        //  Admod();
 
         initSQL();
 
@@ -107,20 +109,33 @@ public class ChiTietPhim_Fragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.bringToFront();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("URL", chiTietPhim_model.getLinkphim());
+                String URL = chiTietPhim_model.getLinkphim();
 
-                Episode_Fragment episode_fragment = new Episode_Fragment();
+                if (isValid(URL)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("URL", URL);
 
-                episode_fragment.setArguments(bundle);
+                    Episode_Fragment episode_fragment = new Episode_Fragment();
 
-                progressBar.setVisibility(View.GONE);
+                    episode_fragment.setArguments(bundle);
 
-                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame, episode_fragment, "Episode_Fragment")
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .addToBackStack("Episode_Fragment")
-                        .commit();
+                    progressBar.setVisibility(View.GONE);
+
+                    FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame, episode_fragment, "Episode_Fragment")
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .addToBackStack("Episode_Fragment")
+                            .commit();
+                } else {
+                    try {
+                        Toasty.error(getContext(), URL.replace("javascript:alert('", "").replace("')", ""), Toast.LENGTH_SHORT, true).show();
+                    } catch (Exception e) {
+                        Toasty.error(getContext(), URL, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                    progressBar.setVisibility(View.GONE);
+                }
+
 
             }
         });
@@ -169,32 +184,47 @@ public class ChiTietPhim_Fragment extends Fragment {
 
     }
 
-    private void Admod() {
+    /* Returns true if url is valid */
+    public static boolean isValid(String url) {
+        /* Try creating a valid URL */
         try {
-            final InterstitialAd mInterstitialAd = new InterstitialAd(getContext());
-            mInterstitialAd.setAdUnitId(getResources().getString(R.string.ads_interstitial));
-            AdRequest adRequestInter = new AdRequest.Builder().build();
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    mInterstitialAd.show();
-                }
+            new URL(url).toURI();
+            return true;
+        }
 
-                @Override
-                public void onAdClosed() {
-
-                }
-
-                @Override
-                public void onAdFailedToLoad(int i) {
-
-                }
-            });
-            mInterstitialAd.loadAd(adRequestInter);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // If there was an Exception
+        // while creating URL object
+        catch (Exception e) {
+            return false;
         }
     }
+
+//    private void Admod() {
+//        try {
+//            final InterstitialAd mInterstitialAd = new InterstitialAd(getContext());
+//            mInterstitialAd.setAdUnitId(getResources().getString(R.string.ads_interstitial));
+//            AdRequest adRequestInter = new AdRequest.Builder().build();
+//            mInterstitialAd.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdLoaded() {
+//                    mInterstitialAd.show();
+//                }
+//
+//                @Override
+//                public void onAdClosed() {
+//
+//                }
+//
+//                @Override
+//                public void onAdFailedToLoad(int i) {
+//
+//                }
+//            });
+//            mInterstitialAd.loadAd(adRequestInter);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void SetItem() {
         Picasso.with(getContext()).load(chiTietPhim_model.getHinhanh()).fit().centerCrop().error(R.drawable.default_fail_img).into(img_hinhanh);
@@ -210,7 +240,7 @@ public class ChiTietPhim_Fragment extends Fragment {
             } else {
                 tv_noidung.setText(Html.fromHtml(chiTietPhim_model.getMota()));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -223,6 +253,8 @@ public class ChiTietPhim_Fragment extends Fragment {
             tv_thich.setVisibility(View.VISIBLE);
             tv_bothich.setVisibility(View.GONE);
         }
+
+        tv_xemphim.setVisibility(View.VISIBLE);
 
     }
 

@@ -8,18 +8,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ani.anivn.Config.Constant;
 import com.ani.anivn.Config.Get_Episode;
+import com.ani.anivn.Database.SqlApp;
 import com.ani.anivn.Episode.Adapter.Episode_Adapter;
+import com.ani.anivn.Model.DaoSession;
 import com.ani.anivn.Model.Episode_Model;
+import com.ani.anivn.Model.Luu_Checkbox_Exoplayer_Videoview_Model;
+import com.ani.anivn.Model.Luu_Checkbox_Exoplayer_Videoview_ModelDao;
 import com.ani.anivn.R;
 
 import java.util.ArrayList;
@@ -34,6 +42,7 @@ public class Episode_Fragment extends Fragment {
     ProgressBar progressBar;
     RecyclerView recyclerView;
     TextView tv_chontap_episode;
+    CheckBox checkBox;
 
     Episode_Adapter adapter;
     List<Episode_Model> listItem;
@@ -42,6 +51,11 @@ public class Episode_Fragment extends Fragment {
 
     Bundle bundle;
     String URL = "";
+    boolean isChecked = false;
+
+    DaoSession daoSession;
+    Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_videoview_exo_dao;
+    Luu_Checkbox_Exoplayer_Videoview_Model luu_videoview;
 
     @Nullable
     @Override
@@ -50,6 +64,8 @@ public class Episode_Fragment extends Fragment {
 
         FindViewById();
 
+        initSQL();
+
         GetBundle();
 
         GetDataServer_Episode();
@@ -57,11 +73,56 @@ public class Episode_Fragment extends Fragment {
         return view;
     }
 
+    private void initSQL() {
+
+        daoSession = ((SqlApp) getActivity().getApplication()).getDaoSession();
+        luu_videoview_exo_dao = daoSession.getLuu_Checkbox_Exoplayer_Videoview_ModelDao();
+
+        luu_videoview = luu_videoview_exo_dao.queryBuilder().where(Luu_Checkbox_Exoplayer_Videoview_ModelDao.Properties.Tag.eq(Constant.TAG_EXOPLAYER_VIDEOVIEW)).build().unique();
+        if (luu_videoview != null) {
+            isChecked = luu_videoview.getIsChecked();
+
+        } else {
+            luu_videoview = new Luu_Checkbox_Exoplayer_Videoview_Model();
+            luu_videoview.setTag(Constant.TAG_EXOPLAYER_VIDEOVIEW);
+            luu_videoview.setIsChecked(false);
+            luu_videoview_exo_dao.save(luu_videoview);
+
+            isChecked = false;
+
+        }
+        checkBox.setChecked(isChecked);
+        checkBox.setVisibility(View.VISIBLE);
+    }
+
     private void FindViewById() {
         progressBar = view.findViewById(R.id.progressbar_episode);
         recyclerView = view.findViewById(R.id.recyclerview_episode);
         tv_chontap_episode = view.findViewById(R.id.tv_chontap_episode);
+        checkBox = view.findViewById(R.id.checkbox_episode);
 
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                isChecked = b;
+
+                Log.d("TESTCHECKBOX",isChecked + "");
+
+                luu_videoview = luu_videoview_exo_dao.queryBuilder().where(Luu_Checkbox_Exoplayer_Videoview_ModelDao.Properties.Tag.eq(Constant.TAG_EXOPLAYER_VIDEOVIEW)).build().unique();
+                if (luu_videoview != null) {
+                    luu_videoview.setIsChecked(isChecked);
+                    luu_videoview_exo_dao.update(luu_videoview);
+
+                } else {
+                    luu_videoview = new Luu_Checkbox_Exoplayer_Videoview_Model();
+                    luu_videoview.setTag(Constant.TAG_EXOPLAYER_VIDEOVIEW);
+                    luu_videoview.setIsChecked(isChecked);
+                    luu_videoview_exo_dao.save(luu_videoview);
+                }
+
+            }
+        });
         get_episode = new Get_Episode(getContext());
     }
 
@@ -115,7 +176,7 @@ public class Episode_Fragment extends Fragment {
     private void SetupRecyclerview() {
 
         recyclerView.setHasFixedSize(true);
-        adapter = new Episode_Adapter(getContext(), listItem, progressBar,tv_chontap_episode);
+        adapter = new Episode_Adapter(getContext(), listItem, progressBar, tv_chontap_episode,luu_videoview_exo_dao);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7, GridLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);

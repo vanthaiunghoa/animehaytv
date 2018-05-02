@@ -125,9 +125,18 @@ public class DbOpenHelper extends DaoMaster.OpenHelper {
 
             case 2:
                 // Log.d("TAG"," 2 ADD COLUMN");
+                db.execSQL("CREATE TABLE IF NOT EXISTS " + " LUU__TIM_KIEM__MODEL (" + //
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: idsql
+                        " TAG  TEXT," + // 1: tag
+                        " KEYWORD TEXT," + // 2: keyword
+                        " ISCHECKED INTEGER NOT NULL );"); // 3: ischecked
 
+                db.execSQL("CREATE TABLE IF NOT EXISTS " + " LUU__CHECKBOX__EXOPLAYER__VIDEOVIEW__MODEL (" + //
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: idsql
+                        " TAG TEXT," + // 1: tag
+                        " IS_CHECKED INTEGER NOT NULL );"); // 2: isChecked
              
-          //  case 3:
+            case 3:
 //                Log.d("TAG","3 ADD COLUMN");
 //            case 4:
 //                Log.d("TAG"," 4 ADD COLUMN");

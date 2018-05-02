@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--&lt;!&ndash;<color name="colorPrimary">#00aa8d</color>&ndash;&gt;-->
+    <!--<color name="colorPrimary">#d32f2f</color>-->
+    <!--<color name="colorPrimaryDark">#d32f2f</color>-->
+    <!--&lt;!&ndash;<color name="colorAccent">#00aa8d</color>&ndash;&gt;-->
+    <!--<color name="colorAccent">#F44336</color>-->
+
     <!--<color name="colorPrimary">#00aa8d</color>-->
-    <color name="colorPrimary">#d32f2f</color>
-    <color name="colorPrimaryDark">#d32f2f</color>
+    <color name="colorPrimary">#252525</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryLight">#4d4d4d</color>
     <!--<color name="colorAccent">#00aa8d</color>-->
-    <color name="colorAccent">#F44336</color>
+    <color name="colorAccent">#252525</color>
+
     <color name="gray">#CCC</color>
     <color name="white">#FFF</color>
     <color name="white_1">#d4d4d4</color>
@@ -31,7 +39,7 @@
     <color name="text2">#2ab17a</color>
     <color name="text_name_star">#ec407a</color>
     <color name="text_spinner">#ec407a</color>
-    <color name="progressbar">#F44336</color>
+    <color name="progressbar">#252525</color>
     <color name="text_empty">#F44336</color>
     <color name="header_navigarion_drawer">#ec407a</color>
     <color name="black_overlay">#66000000</color>

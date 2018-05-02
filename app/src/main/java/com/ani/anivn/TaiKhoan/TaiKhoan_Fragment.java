@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -100,8 +103,11 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
 
             auth.signOut();
 
-            Toasty.success(getContext(), "Thoát tài khoản thành công !", Toast.LENGTH_SHORT, true).show();
+            try {
+                Toasty.success(getContext(), "Thoát tài khoản thành công !", Toast.LENGTH_SHORT, true).show();
+            } catch (Exception e) {
 
+            }
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -121,13 +127,24 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
 
                     ref.child("savedata").child(auth.getCurrentUser().getUid()).setValue(listYeuThich);
 
-                    Toasty.success(getContext(), "Upload Phim Yêu Thích lên server !", Toast.LENGTH_SHORT, true).show();
+                    try {
+                        Toasty.success(getContext(), "Upload Phim Yêu Thích lên server !", Toast.LENGTH_SHORT, true).show();
+                    } catch (Exception e) {
 
+                    }
                 } else {
-                    Toasty.error(getContext(), "Chưa có bất kì phim nào trong mục yêu thích !", Toast.LENGTH_SHORT, true).show();
+                    try {
+                        Toasty.error(getContext(), "Chưa có bất kì phim nào trong mục yêu thích !", Toast.LENGTH_SHORT, true).show();
+                    } catch (Exception e) {
+
+                    }
                 }
             } else {
+                try{
                 Toasty.error(getContext(), "Bạn cần phải đăng nhập tài khoản !", Toast.LENGTH_SHORT, true).show();
+                }catch (Exception e){
+
+                }
                 FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, new Login_Fragment(), "Login_Fragment")
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -201,5 +218,22 @@ public class TaiKhoan_Fragment extends Fragment implements View.OnClickListener 
                         .commit();
             }
         }
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_nothing, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

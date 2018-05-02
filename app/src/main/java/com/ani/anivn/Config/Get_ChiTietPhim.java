@@ -1,6 +1,7 @@
 package com.ani.anivn.Config;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -107,12 +108,12 @@ public class Get_ChiTietPhim {
                                 }
                             }
 
-                           // Log.d("TESTAPI", linkphim + "\n" + anhnen + "\n" + namphathanh + "\n" + theloai + "\n" + thoiluong + "\n" + mota);
+//                            Log.d("TESTAPI", linkphim + "\n" + anhnen + "\n" + namphathanh + "\n" + theloai + "\n" + thoiluong + "\n" + mota);
 
                             callback.onSuccess(linkphim, anhnen, namphathanh, theloai, thoiluong, mota);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            callback.onFail("Error get data !");
+                            callback.onFail("Error get data !" + e.getMessage());
 
                         }
 
@@ -135,10 +136,8 @@ public class Get_ChiTietPhim {
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        if (message != null)
-                            callback.onFail(message);
-                        else
-                            callback.onFail("Something Wrong here!");
+
+                        callback.onFail(message+ " ");
                     }
                 }) {
             @Override
@@ -148,16 +147,16 @@ public class Get_ChiTietPhim {
                 return map;
             }
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                try {
-                    String utf8String = new String(response.data, "UTF-8");
-                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    // log error
-                    return Response.error(new ParseError(e));
-                }
-            }
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                try {
+//                    String utf8String = new String(response.data, "UTF-8");
+//                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
+//                } catch (UnsupportedEncodingException e) {
+//                    // log error
+//                    return Response.error(new ParseError(e));
+//                }
+//            }
 
 
         };

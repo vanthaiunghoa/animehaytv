@@ -18,6 +18,16 @@
         android:text=""
         android:textColor="@color/text_name_star" />
 
+    <CheckBox
+        android:id="@+id/checkbox_episode"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_empty"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="@string/checkbox_episode"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,90 +65,85 @@ import es.dmoral.toasty.Toasty;
 
 public class Exoplayer_Fragment extends Fragment {
     View view;
-
-    ProgressBar progressBar;
+    //private Anime_SourceVideo_Model sourcevideo;
     List<String> listURL;
-    int indexUrl = 0;
-    String URL="";
-
+    int INDEX_URL = 0;
+    Bundle bundle;
+    private String URL = "";
     private boolean ADS_STATE_START = true;
     private boolean ADS_STATE_END = true;
+    ProgressBar progressbar_exoplayer;
+    // Anime_Lichsu_Model anime_lichsu_model;
 
-    Bundle bundle;
+    private final String STATE_RESUME_WINDOW = "resumeWindow";
+    private final String STATE_RESUME_POSITION = "resumePosition";
+    private final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
 
-    final String STATE_RESUME_WINDOW = "resumeWindow";
-    final String STATE_RESUME_POSITION = "resumePosition";
-    final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
+    private SimpleExoPlayerView mExoPlayerView;
+    private MediaSource mVideoSource;
+    private boolean mExoPlayerFullscreen = false;
+    private FrameLayout mFullScreenButton;
+    private ImageView mFullScreenIcon;
+    private Dialog mFullScreenDialog;
 
-    SimpleExoPlayerView mExoPlayerView;
-    MediaSource mVideoSource;
-    boolean mExoPlayerFullscreen = false;
-    FrameLayout mFullScreenButton;
-    ImageView mFullScreenIcon;
-    Dialog mFullScreenDialog;
-
-    int mResumeWindow;
-    long mResumePosition;
-
-    ///////////// LICH SU ////////////////
-
-    DaoSession daoSession;
-//    LichSu_Model lichSu_model;
-//    LichSu_ModelDao lichsu_dao;
-
+    private int mResumeWindow;
+    private long mResumePosition;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         view = inflater.inflate(R.layout.fragment_exoplayer, container, false);
+        progressbar_exoplayer = (ProgressBar) view.findViewById(R.id.progressbar_exoplayer);
 
-        progressBar = view.findViewById(R.id.progressbar_exoplayer);
+        GetBundle();
 
-        initSQl();
+        //  GetDataEvenBus();
 
-        GetDataBundle();
-
-        if (savedInstanceState != null) {
-            mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
-            mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
-            mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+        try {
+            if (savedInstanceState != null) {
+                mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
+                mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+                mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+            }
+        }catch (Exception e){
+            Toasty.error(getContext(),"SavedInstanceState "+ e.getMessage(), Toast.LENGTH_SHORT,true).show();
         }
 
+
         return view;
-
     }
 
-    private void initSQl() {
-        daoSession = ((SqlApp) getActivity().getApplication()).getDaoSession();
-//        lichsu_dao = daoSession.getLichSu_ModelDao();
-    }
-
-    private void GetDataBundle() {
-
-        bundle = getArguments();
-        if (bundle != null) {
-
+    private void GetBundle() {
+        try {
+            bundle = getArguments();
             listURL = new ArrayList<>();
-            listURL = bundle.getStringArrayList("listURL");
-
-            if (listURL != null) {
-                if (listURL.size() > 0) {
-                    URL = listURL.get(indexUrl);
-                    indexUrl += 1;
+            if (bundle != null) {
+                if (bundle.containsKey("listURL")) {
+                    listURL = bundle.getStringArrayList("listURL");
+                    if (listURL.size() > 0) {
+                        URL = listURL.get(INDEX_URL);
+                    }
                 }
             }
+        }catch (Exception e){
+            Toasty.error(getContext(), "Bundle " + e.getMessage(), Toast.LENGTH_SHORT, true).show();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
-        outState.putLong(STATE_RESUME_POSITION, mResumePosition);
-        outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
+        try {
+            outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
+            outState.putLong(STATE_RESUME_POSITION, mResumePosition);
+            outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
 
-        super.onSaveInstanceState(outState);
+
+            super.onSaveInstanceState(outState);
+        }catch (Exception e){
+            Toasty.error(getContext(), "onSaveInstanceState " + e.getMessage(), Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private void initFullscreenDialog() {
@@ -172,6 +168,7 @@ public class Exoplayer_Fragment extends Fragment {
         mFullScreenDialog.show();
     }
 
+
     private void closeFullscreenDialog() {
 
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -185,145 +182,155 @@ public class Exoplayer_Fragment extends Fragment {
 
     private void initFullscreenButton() {
 
-        PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
-        mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoPlayerFullscreen)
-                    openFullscreenDialog();
-                else
-                    closeFullscreenDialog();
-            }
-        });
+        try {
+            PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
+            mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
+            mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
+            mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mExoPlayerFullscreen)
+                        openFullscreenDialog();
+                    else
+                        closeFullscreenDialog();
+                }
+            });
+        } catch (Exception e) {
+            Toasty.error(getContext(), "Error fullscreen " + e.getMessage(), Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private void initExoPlayer() {
+        try {
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+            LoadControl loadControl = new DefaultLoadControl();
+            SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, loadControl);
+            mExoPlayerView.setPlayer(player);
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, loadControl);
-        mExoPlayerView.setPlayer(player);
+            boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
 
-        boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+            if (haveResumePosition) {
+                mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+            }
 
-        if (haveResumePosition) {
-            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+            mExoPlayerView.getPlayer().prepare(mVideoSource);
+            mExoPlayerView.getPlayer().setPlayWhenReady(true);
+            mExoPlayerView.getPlayer().addListener(new Player.EventListener() {
+                @Override
+                public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+                }
+
+                @Override
+                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+                }
+
+                @Override
+                public void onLoadingChanged(boolean isLoading) {
+
+                }
+
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if (playbackState == ExoPlayer.STATE_BUFFERING) {
+                        progressbar_exoplayer.setVisibility(View.VISIBLE);
+                        progressbar_exoplayer.bringToFront();
+                    } else {
+                        progressbar_exoplayer.setVisibility(View.GONE);
+                    }
+
+                    if (playbackState == ExoPlayer.STATE_READY && ADS_STATE_START == true) {
+                        // Admod();
+
+                    }
+                    if (playbackState == ExoPlayer.STATE_ENDED && ADS_STATE_END == true) {
+                        //Admod1();
+                    }
+
+                    if (playbackState == ExoPlayer.STATE_READY) {
+                        //AddDataDaXem();
+                    }
+                }
+
+                @Override
+                public void onRepeatModeChanged(int repeatMode) {
+
+                }
+
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+                    INDEX_URL = INDEX_URL + 1;
+                    if (INDEX_URL < listURL.size() && listURL.size() > 0) {
+                        URL = listURL.get(INDEX_URL);
+
+                        if (mExoPlayerView == null) {
+
+                            mExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer);
+                            initFullscreenDialog();
+                            initFullscreenButton();
+
+                            String userAgent = Util.getUserAgent(getContext(), getActivity().getApplicationInfo().packageName);
+                            DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
+                            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), null, httpDataSourceFactory);
+                            Uri daUri = Uri.parse(URL);
+                            DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+                            mVideoSource = new ExtractorMediaSource(daUri, dataSourceFactory, extractorsFactory, null, null);
+                        }
+
+                        initExoPlayer();
+
+                        if (mExoPlayerFullscreen) {
+                            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+                            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
+                            mFullScreenDialog.show();
+                        }
+
+                    } else {
+                        try {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage(R.string.exoplayer_error_load_video);
+                            builder.setCancelable(false);
+                            builder.setPositiveButton(
+                                    "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                        }
+                                    });
+
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        } catch (Exception e) {
+                            Toasty.error(getContext(), getString(R.string.exoplayer_error_load_video), Toast.LENGTH_SHORT, true).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onPositionDiscontinuity() {
+
+                }
+
+                @Override
+                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+                }
+            });
+        } catch (Exception e) {
+            Toasty.error(getContext(), "Error initplayer " + e.getMessage(), Toast.LENGTH_SHORT ,true).show();
         }
-
-        mExoPlayerView.getPlayer().prepare(mVideoSource);
-        mExoPlayerView.getPlayer().setPlayWhenReady(true);
-        mExoPlayerView.getPlayer().addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == ExoPlayer.STATE_BUFFERING) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.bringToFront();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }
-
-                if (playbackState == ExoPlayer.STATE_READY && ADS_STATE_START == true) {
-                    Admod();
-
-                }
-                if (playbackState == ExoPlayer.STATE_ENDED && ADS_STATE_END == true) {
-                    Admod1();
-                }
-
-                if (playbackState == ExoPlayer.STATE_READY) {
-                    GetData_LichSu_DaXem();
-                }
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-
-                if (listURL != null && listURL.size() > 0 && indexUrl < listURL.size() - 1) {
-
-                    URL = listURL.get(indexUrl);
-                    indexUrl += 1;
-
-
-                    if (mExoPlayerView == null) {
-
-                        mExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer);
-                        initFullscreenDialog();
-                        initFullscreenButton();
-
-                        String userAgent = Util.getUserAgent(getContext(), getActivity().getApplicationInfo().packageName);
-                        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
-                        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), null, httpDataSourceFactory);
-                        Uri daUri = Uri.parse(URL);
-                        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-                        mVideoSource = new ExtractorMediaSource(daUri, dataSourceFactory, extractorsFactory, null, null);
-                    }
-
-                    initExoPlayer();
-
-
-                } else {
-                    try {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage(R.string.exoplayer_error_load_video);
-                        builder.setCancelable(false);
-                        builder.setPositiveButton(
-                                "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                });
-
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    } catch (Exception e) {
-                    Toasty.error(getContext(), getString(R.string.exoplayer_error_load_video), Toast.LENGTH_SHORT, true).show();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onPositionDiscontinuity() {
-
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-            }
-        });
     }
 
-    private void GetData_LichSu_DaXem() {
-//        lichSu_model = new LichSu_Model();
-//        lichSu_model = EventBus.getDefault().getStickyEvent(LichSu_Model.class);
-//        if (lichSu_model != null)
-//            lichsu_dao.save(lichSu_model);
+    private void AddDataDaXem() {
+//        anime_lichsu_model = new Anime_Lichsu_Model();
+//        anime_lichsu_model = EventBus.getDefault().getStickyEvent(Anime_Lichsu_Model.class);
+//        Anime_Lichsu_ModelDao lichsuDao = ((SqlApp) getActivity().getApplication()).getDaoSession().getAnime_Lichsu_ModelDao();
+//        if(anime_lichsu_model != null)
+//            lichsuDao.save(anime_lichsu_model);
     }
 
     @Override
@@ -331,27 +338,34 @@ public class Exoplayer_Fragment extends Fragment {
 
         super.onResume();
 
-        if (mExoPlayerView == null) {
+        try {
+            if (mExoPlayerView == null) {
 
-            mExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer);
-            initFullscreenDialog();
-            initFullscreenButton();
+                mExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer);
+                initFullscreenDialog();
+                initFullscreenButton();
 
-            String userAgent = Util.getUserAgent(getContext(), getActivity().getApplicationInfo().packageName);
-            DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), null, httpDataSourceFactory);
-            Uri daUri = Uri.parse(URL);
-            DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-            mVideoSource = new ExtractorMediaSource(daUri, dataSourceFactory, extractorsFactory, null, null);
-        }
+                String userAgent = Util.getUserAgent(getContext(), getActivity().getApplicationInfo().packageName);
+                DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
+                DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), null, httpDataSourceFactory);
+                Uri daUri = Uri.parse(URL);
+                DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+                mVideoSource = new ExtractorMediaSource(daUri, dataSourceFactory, extractorsFactory, null, null);
+            }
 
-        initExoPlayer();
+            initExoPlayer();
 
-        if (mExoPlayerFullscreen) {
-            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
-            mFullScreenDialog.show();
+            if (mExoPlayerFullscreen) {
+                ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+                mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
+                mFullScreenDialog.show();
+            }
+
+           // Toast.makeText(getContext(), "" + URL, Toast.LENGTH_LONG).show();
+
+        }catch (Exception e){
+            Toasty.error(getContext(), "Resume " + e.getMessage(), Toast.LENGTH_SHORT,true).show();
         }
 
     }
@@ -371,19 +385,6 @@ public class Exoplayer_Fragment extends Fragment {
 
         if (mFullScreenDialog != null)
             mFullScreenDialog.dismiss();
-    }
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        //Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
     }
 
     private void Admod() {
@@ -441,6 +442,11 @@ public class Exoplayer_Fragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+//    public void GetDataEvenBus() {
+//        sourcevideo = EventBus.getDefault().getStickyEvent(Anime_SourceVideo_Model.class);
+//        URL = sourcevideo.getFile();
+//    }
 
 
 }

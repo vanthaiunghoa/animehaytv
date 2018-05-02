@@ -19,8 +19,13 @@ import com.ani.anivn.Model.CNAnimation_ModelDao;
 import com.ani.anivn.Model.DaoSession;
 import com.ani.anivn.Model.HoatHinh_LuuTrang_ModelDao;
 import com.ani.anivn.Model.HoatHinh_ModelDao;
+import com.ani.anivn.Model.Luu_Checkbox_Exoplayer_VideoviewDao;
+import com.ani.anivn.Model.Luu_Checkbox_Exoplayer_Videoview_Model;
+import com.ani.anivn.Model.Luu_Checkbox_Exoplayer_Videoview_ModelDao;
 import com.ani.anivn.Model.Luu_Model;
 import com.ani.anivn.Model.Luu_ModelDao;
+import com.ani.anivn.Model.Luu_TimKiem_Model;
+import com.ani.anivn.Model.Luu_TimKiem_ModelDao;
 import com.ani.anivn.Model.NamPhatHanh_LuuTrang_ModelDao;
 import com.ani.anivn.Model.NamPhatHanh_ModelDao;
 import com.ani.anivn.Model.PhimMoiCapNhat_ModelDao;
@@ -46,6 +51,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     NamPhatHanh_LuuTrang_ModelDao namPhatHanh_luuTrang_modelDao;
 
     Luu_ModelDao luu_dao;
+
+    Luu_TimKiem_ModelDao luu_timKiem_modelDao;
+
+    Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_checkbox_exoplayer_videoviewDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +129,23 @@ public class SplashScreenActivity extends AppCompatActivity {
         luu_dao.save(luu_model_namphathanh);
 
 
+        luu_timKiem_modelDao = daoSession.getLuu_TimKiem_ModelDao();
+        luu_timKiem_modelDao.deleteAll();
+        Luu_TimKiem_Model luu_timKiem_model = new Luu_TimKiem_Model();
+        luu_timKiem_model.setTag(Constant.TAG_LUU_TIMKIEM);
+        luu_timKiem_model.setIschecked(false);
+        luu_timKiem_model.setKeyword("");
+        luu_timKiem_modelDao.save(luu_timKiem_model);
+
+
+        luu_checkbox_exoplayer_videoviewDao = daoSession.getLuu_Checkbox_Exoplayer_Videoview_ModelDao();
+        Luu_Checkbox_Exoplayer_Videoview_Model luu_videoview_exo = luu_checkbox_exoplayer_videoviewDao.queryBuilder().where(Luu_Checkbox_Exoplayer_Videoview_ModelDao.Properties.Tag.eq(Constant.TAG_EXOPLAYER_VIDEOVIEW)).build().unique();
+        if (luu_videoview_exo == null) {
+            Luu_Checkbox_Exoplayer_Videoview_Model luu_videoview = new Luu_Checkbox_Exoplayer_Videoview_Model();
+            luu_videoview.setTag(Constant.TAG_EXOPLAYER_VIDEOVIEW);
+            luu_videoview.setIsChecked(false);
+            luu_checkbox_exoplayer_videoviewDao.save(luu_videoview);
+        }
     }
 
 

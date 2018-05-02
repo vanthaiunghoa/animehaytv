@@ -123,15 +123,15 @@ public class BangXepHangNgay_Fragment extends Fragment {
 
         } else {
 
-            GetDataServer();
+            GetDataServer_API();
 
         }
 
     }
 
-    private void GetDataServer() {
+    private void GetDataServer_API() {
 
-        get_bangXepHangNgay.BangXepHangNgay(bangXepHangNgay_modelDao, new Get_BangXepHangNgay.BangXepHangNgay_Callback() {
+        get_bangXepHangNgay.BangXepHangNgay_API(bangXepHangNgay_modelDao, new Get_BangXepHangNgay.BangXepHangNgay_Callback() {
             @Override
             public void onSuccess(List<BangXepHangNgay_Model> list_data) {
 

@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity
                 TaiKhoan_Fragment taiKhoan_fragment = new TaiKhoan_Fragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, taiKhoan_fragment, "TaiKhoan_Fragment")
+                        .addToBackStack("TaiKhoan_Fragment")
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
             } else {
@@ -291,6 +292,7 @@ public class MainActivity extends AppCompatActivity
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, login_fragment, "Login_Fragment")
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .addToBackStack("Login_Fragment")
                         .commit();
             }
         }

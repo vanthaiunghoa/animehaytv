@@ -20,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.ani.anivn.Model.BangXepHangNgay_Model;
 import com.ani.anivn.Model.BangXepHangNgay_ModelDao;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -73,7 +75,7 @@ public class Get_BangXepHangNgay {
                                         hinhanh = img.attr("src").replace(REMOVE, "");
                                     }
 
-                                   // Log.d("TESTAPI", item.html());
+                                    // Log.d("TESTAPI", item.html());
 
                                     Element infor = item.selectFirst("div.ah-float-left.w-70");
                                     if (infor != null) {
@@ -107,7 +109,7 @@ public class Get_BangXepHangNgay {
                             callback.onSuccess(list_data);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            callback.onFail("Error get data !");
+                            callback.onFail("Error get data !" + e.getMessage());
                         }
 
                     }
@@ -129,10 +131,9 @@ public class Get_BangXepHangNgay {
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        if (message != null)
-                            callback.onFail(message);
-                        else
-                            callback.onFail("Something Wrong here!");
+
+                        callback.onFail(message + " ");
+
                     }
                 }) {
             @Override
@@ -142,16 +143,16 @@ public class Get_BangXepHangNgay {
                 return map;
             }
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                try {
-                    String utf8String = new String(response.data, "UTF-8");
-                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    // log error
-                    return Response.error(new ParseError(e));
-                }
-            }
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                try {
+//                    String utf8String = new String(response.data, "UTF-8");
+//                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
+//                } catch (UnsupportedEncodingException e) {
+//                    // log error
+//                    return Response.error(new ParseError(e));
+//                }
+//            }
 
 
         };
@@ -161,5 +162,119 @@ public class Get_BangXepHangNgay {
         requestQueue.add(stringRequest);
 
     }
+
+    public void BangXepHangNgay_API(final BangXepHangNgay_ModelDao dao, final Get_BangXepHangNgay.BangXepHangNgay_Callback callback) {
+
+        String LINK = "http://www.phamdinhhai0810-animetvn.tk/api/anime/bxh";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            List<BangXepHangNgay_Model> list_data = new ArrayList<>();
+                            String message = "";
+
+                            JSONObject jsonObject = new JSONObject(response.toString());
+
+                            JSONArray list = new JSONArray();
+
+                            if (jsonObject.has("message"))
+                                message = jsonObject.getString("message");
+
+                            if (jsonObject.has("list"))
+                                list = jsonObject.getJSONArray("list");
+
+                            if (list != null && list.length() > 0) {
+
+                                for (int i = 0; i < list.length(); i++) {
+                                    JSONObject item = list.getJSONObject(i);
+
+                                    String tenphim = "", hinhanh = "", linkthongtinphim = "", luotxem = "";
+
+                                    if (item.has("tenphim"))
+                                        tenphim = item.getString("tenphim");
+                                    if (item.has("hinhanh"))
+                                        hinhanh = item.getString("hinhanh");
+                                    if (item.has("linkthongtinphim"))
+                                        linkthongtinphim = item.getString("linkthongtinphim");
+                                    if (item.has("luotxem"))
+                                        luotxem = item.getString("luotxem");
+
+                                    BangXepHangNgay_Model b = new BangXepHangNgay_Model();
+                                    b.setTenphim(tenphim);
+                                    b.setHinhanh(hinhanh);
+                                    b.setLinkthongtinphim(linkthongtinphim);
+                                    b.setLuotxem(luotxem);
+
+                                    list_data.add(b);
+
+                                    dao.save(b);
+                                }
+
+
+                            } else {
+                                callback.onFail("Chưa thống kê bảng xếp hạng ngày " + message);
+                            }
+
+                            callback.onSuccess(list_data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            callback.onFail("Error get data !" + e.getMessage());
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        String message = null;
+                        if (volleyError instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof ServerError) {
+                            message = "The server could not be found. Please try again after some time!!";
+                        } else if (volleyError instanceof AuthFailureError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof ParseError) {
+                            message = "Parsing error! Please try again after some time!!";
+                        } else if (volleyError instanceof NoConnectionError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof TimeoutError) {
+                            message = "Connection TimeOut! Please check your internet connection.";
+                        }
+
+                        callback.onFail(message + " ");
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> map = new HashMap<>();
+                return map;
+            }
+
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                try {
+//                    String utf8String = new String(response.data, "UTF-8");
+//                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
+//                } catch (UnsupportedEncodingException e) {
+//                    // log error
+//                    return Response.error(new ParseError(e));
+//                }
+//            }
+
+
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) {
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+    }
+
 
 }

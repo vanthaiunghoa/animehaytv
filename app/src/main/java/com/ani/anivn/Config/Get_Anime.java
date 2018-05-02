@@ -202,7 +202,7 @@ public class Get_Anime {
                             callback.onSuccess(list_data, list_trang);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            callback.onFail("Error get data !");
+                            callback.onFail("Error get data !" + e.getMessage());
                         }
 
                     }
@@ -224,10 +224,9 @@ public class Get_Anime {
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        if (message != null)
-                            callback.onFail(message);
-                        else
-                            callback.onFail("Something Wrong here!");
+
+                        callback.onFail(message+ " ");
+
                     }
                 }) {
             @Override
@@ -237,16 +236,16 @@ public class Get_Anime {
                 return map;
             }
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                try {
-                    String utf8String = new String(response.data, "UTF-8");
-                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    // log error
-                    return Response.error(new ParseError(e));
-                }
-            }
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                try {
+//                    String utf8String = new String(response.data, "UTF-8");
+//                    return Response.success(new String(utf8String), HttpHeaderParser.parseCacheHeaders(response));
+//                } catch (UnsupportedEncodingException e) {
+//                    // log error
+//                    return Response.error(new ParseError(e));
+//                }
+//            }
 
 
         };

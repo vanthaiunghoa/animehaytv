@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Anime Vietsub Online</string>
 
-    <!--<string name="ads_banner">ca-app-pub-3940256099942544/6300978111</string>-->
-    <!--<string name="ads_interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+    <string name="ads_banner">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_interstitial">ca-app-pub-3940256099942544/1033173712</string>
 
-     Anivn
-    <string name="ads_banner">ca-app-pub-9070559688820434/5955566045</string>
-    <string name="ads_interstitial">ca-app-pub-9070559688820434/1628829297</string>
+    <!--Anivn-->
+    <!--<string name="ads_banner">ca-app-pub-9070559688820434/5955566045</string>-->
+    <!--<string name="ads_interstitial">ca-app-pub-9070559688820434/1628829297</string>-->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,6 +15,9 @@
 
     <string name="exoplayer_error_load_video">Không tìm thấy video. Có thể tập này lỗi rồi !</string>
 
+    <string name="checkbox_timkiem">Tìm kiếm xảy ra lỗi thì tích vào đây sau đó tìm kiếm phim bình thường.</string>
+    <string name="checkbox_episode">Tích vào đây nếu như chọn tập mà bị out ra ngoài.</string>
+
     <string name="update_title">New update available!</string>
     <string name="update_message">Đã có phiên bản cập nhật ứng dụng mới. Hãy cập nhật phiên bản ứng dụng mới nhất để có những trải nghiệm tốt nhất .</string>
 
@@ -22,5 +25,5 @@
     <string name="rate_message">How do you like our app ? </string>
 
     <string name="luuy_taikhoan">Lưu ý : Tài khoản email này sẽ được dùng để bạn lưu tất cả phim yêu thích khi bạn muốn thay đổi điện thoại .</string>
-    
+
 </resources>
