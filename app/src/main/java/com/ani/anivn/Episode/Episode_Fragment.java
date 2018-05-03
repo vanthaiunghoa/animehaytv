@@ -52,7 +52,10 @@ public class Episode_Fragment extends Fragment {
     Bundle bundle;
     String URL = "";
     boolean isChecked = false;
-
+    
+    LichSu_Model lichsu_model;
+    LichSu_ModelDao lichsu_dao;
+    
     DaoSession daoSession;
     Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_videoview_exo_dao;
     Luu_Checkbox_Exoplayer_Videoview_Model luu_videoview;
@@ -76,6 +79,9 @@ public class Episode_Fragment extends Fragment {
     private void initSQL() {
 
         daoSession = ((SqlApp) getActivity().getApplication()).getDaoSession();
+        
+        lichsu_dao = daoSession.getLichSu_ModelDao();
+        
         luu_videoview_exo_dao = daoSession.getLuu_Checkbox_Exoplayer_Videoview_ModelDao();
 
         luu_videoview = luu_videoview_exo_dao.queryBuilder().where(Luu_Checkbox_Exoplayer_Videoview_ModelDao.Properties.Tag.eq(Constant.TAG_EXOPLAYER_VIDEOVIEW)).build().unique();
@@ -128,10 +134,19 @@ public class Episode_Fragment extends Fragment {
 
     private void GetBundle() {
 
+        lichsu_model = new LichSu_Model();
+        
         bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("URL"))
                 URL = bundle.getString("URL");
+            
+            if (bundle.containsKey("tenphim") && bundle.getString("tenphim") != null)
+               lichsu_model.setTenPhim( bundle.getString("tenphim"));
+            if (bundle.containsKey("hinhanh") && bundle.getString("hinhanh") != null)
+                lichsu_model.setHinhanh( bundle.getString("hinhanh"));
+            if (bundle.containsKey("linkthongtinphim")&& bundle.getString("linkthongtinphim") != null)
+                lichsu_model.setLinkthongtinphim(bundle.getString("linkthongtinphim"));
         }
     }
 
@@ -176,7 +191,7 @@ public class Episode_Fragment extends Fragment {
     private void SetupRecyclerview() {
 
         recyclerView.setHasFixedSize(true);
-        adapter = new Episode_Adapter(getContext(), listItem, progressBar, tv_chontap_episode,luu_videoview_exo_dao);
+        adapter = new Episode_Adapter(getContext(), listItem, progressBar, tv_chontap_episode,luu_videoview_exo_dao,lichsu_dao,lichsu_model);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7, GridLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
