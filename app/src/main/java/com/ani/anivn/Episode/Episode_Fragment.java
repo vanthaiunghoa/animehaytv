@@ -52,7 +52,7 @@ public class Episode_Fragment extends Fragment {
     Bundle bundle;
     String URL = "";
     boolean isChecked = false;
-    
+    String tapdaxem="" ;   
     LichSu_Model lichsu_model;
     LichSu_ModelDao lichsu_dao;
     
@@ -68,6 +68,8 @@ public class Episode_Fragment extends Fragment {
         FindViewById();
 
         initSQL();
+        
+        CheckboxEvent();
 
         GetBundle();
 
@@ -107,6 +109,10 @@ public class Episode_Fragment extends Fragment {
         tv_chontap_episode = view.findViewById(R.id.tv_chontap_episode);
         checkBox = view.findViewById(R.id.checkbox_episode);
 
+        get_episode = new Get_Episode(getContext());
+    }
+    
+    private void CheckboxEvent(){
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -129,7 +135,6 @@ public class Episode_Fragment extends Fragment {
 
             }
         });
-        get_episode = new Get_Episode(getContext());
     }
 
     private void GetBundle() {
@@ -141,12 +146,17 @@ public class Episode_Fragment extends Fragment {
             if (bundle.containsKey("URL"))
                 URL = bundle.getString("URL");
             
-            if (bundle.containsKey("tenphim") && bundle.getString("tenphim") != null)
+            if (bundle.containsKey("tenphim") && bundle.getString("tenphim") != null){
                lichsu_model.setTenPhim( bundle.getString("tenphim"));
+             LichSu_Model check = lichsu_dao.queryBuilder().where(LichSu_ModelDao.Properties.Tenphim.eq(bundle.getString("tenphim"))).build().unique();  
+                if(check != null)
+                    tapdaxem = check.getTapdaxem;
+            }
             if (bundle.containsKey("hinhanh") && bundle.getString("hinhanh") != null)
                 lichsu_model.setHinhanh( bundle.getString("hinhanh"));
             if (bundle.containsKey("linkthongtinphim")&& bundle.getString("linkthongtinphim") != null)
                 lichsu_model.setLinkthongtinphim(bundle.getString("linkthongtinphim"));
+
         }
     }
 
@@ -178,7 +188,7 @@ public class Episode_Fragment extends Fragment {
                         "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
+                                dialog.dismiss();
                             }
                         });
 
@@ -191,7 +201,7 @@ public class Episode_Fragment extends Fragment {
     private void SetupRecyclerview() {
 
         recyclerView.setHasFixedSize(true);
-        adapter = new Episode_Adapter(getContext(), listItem, progressBar, tv_chontap_episode,luu_videoview_exo_dao,lichsu_dao,lichsu_model);
+        adapter = new Episode_Adapter(getContext(), listItem, progressBar, tv_chontap_episode,luu_videoview_exo_dao,lichsu_dao,lichsu_model,tapdaxem);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7, GridLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
