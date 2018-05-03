@@ -72,10 +72,18 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Episode_Model film = itemsList.get(position);
         holder.tv_trang.setText(film.getTen_tap());
-        
-        if(lichsu_model != null){
-        LichSu_Model check = 
+        boolean daxem = false;
+        if(tapdaxem != null && tapdaxem.length > 0){
+            String[] tap = tapdaxem.split("@@@");
             
+            for(int i=0; i< tap.length; i++){
+                if(film.getTen_tap().equals(tap[i])){
+                    daxem = true;
+                 holder.cardview_trang.setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
+                  i = tap.length;
+                }         
+            }
+         
         }
 
         holder.cardview_trang.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +92,26 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
                 activity = (AppCompatActivity) v.getContext();
 
                 Admod(activity);
+                
+                if(lichsu_model != null){
+                    if(lichsu_model.getTenphim().length >0){
+                         LichSu_Model check = lichsu_dao.queryBuilder().where(LichSu_ModelDao.Properties.Tenphim.eq(lichsu_model.getTenphim())).build().unique();  
+                           if(check != null){
+                                if(!daxem){
+                                    tapdaxem= tapdaxem + "@@@" + film.getTen_tap();
+                                    lichsu_dao.update(check);
+                                    daxem = true;
+                                }  
+                            }else{
+                                tapdaxem=  film.getTen_tap();
+                               lichsu_model.setTapdaxem(tapdaxem);
+                               lichsu_dao.save(lichsu_model);
+                               daxem = true;
+                            }
+                    }else{
+                    }
+                }else{
+                }
 
                 try {
 
