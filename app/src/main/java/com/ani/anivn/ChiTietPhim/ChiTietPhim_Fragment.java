@@ -114,6 +114,11 @@ public class ChiTietPhim_Fragment extends Fragment {
                 if (isValid(URL)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("URL", URL);
+                    if(chiTietPhim_model != null){
+                        bundle.putString("tenphim", chiTietPhim_model.getTenphim);
+                        bundle.putString("hinhanh", chiTietPhim_model.getHinhanh);
+                        bundle.putString("linkthongtinphim", chiTietPhim_model.getLinkthongtinphim);
+                    }
 
                     Episode_Fragment episode_fragment = new Episode_Fragment();
 
