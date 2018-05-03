@@ -45,13 +45,19 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
     ProgressBar progressBar;
     TextView tv_chontap_episode;
     Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_videoview_exo_dao;
-
-    public Episode_Adapter(Context context, List<Episode_Model> itemsList, ProgressBar progressBar, TextView tv_chontap_episode, Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_videoview_exo_dao) {
+    LichSu_ModelDao lichsu_dao;
+    LichSu_Model lichsu_model;
+    String tapdaxem;
+    
+    public Episode_Adapter(Context context, List<Episode_Model> itemsList, ProgressBar progressBar, TextView tv_chontap_episode, Luu_Checkbox_Exoplayer_Videoview_ModelDao luu_videoview_exo_dao,LichSu_ModelDao lichsu_dao,LichSu_Model lichsu_model,String tapdaxem) {
         this.itemsList = itemsList;
         this.context = context;
         this.progressBar = progressBar;
         this.tv_chontap_episode = tv_chontap_episode;
         this.luu_videoview_exo_dao = luu_videoview_exo_dao;
+        this.lichsu_dao=lichsu_dao;
+        this.lichsu_model=lichsu_model;
+        this.tapdaxem=tapdaxem;
     }
 
     @Override
@@ -66,6 +72,11 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Episode_Model film = itemsList.get(position);
         holder.tv_trang.setText(film.getTen_tap());
+        
+        if(lichsu_model != null){
+        LichSu_Model check = 
+            
+        }
 
         holder.cardview_trang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +119,7 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
                                 activity.startActivity(intent);
                             } else {
                                 Exoplayer_Fragment exoplayer_fragment = new Exoplayer_Fragment();
-//
+
                                 exoplayer_fragment.setArguments(bundle);
 
                                 FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
@@ -116,12 +127,6 @@ public class Episode_Adapter extends RecyclerView.Adapter<Episode_Adapter.MyView
                                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                         .commit();
                             }
-//
-
-//                        Intent intent = new Intent(activity, ExoPlayerActivity.class);
-//                        intent.putExtra("bundle",bundle);
-//
-//                        activity.startActivity(intent);
 
                         }
 
