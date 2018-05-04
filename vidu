@@ -6,6 +6,26 @@ else{
      mRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
 }
 
+ @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setHasFixedSize(true);
+            adapter = new PhimMoiCapNhat_Adapter(getContext(), listItem, progressBar);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(adapter);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setHasFixedSize(true);
+            adapter = new PhimMoiCapNhat_Adapter(getContext(), listItem, progressBar);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
