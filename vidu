@@ -1,3 +1,11 @@
+
+if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+     mRecycler.setLayoutManager(new GridLayoutManager(mContext, 2));
+}
+else{
+     mRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
+}
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
