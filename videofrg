@@ -1,0 +1,96 @@
+package com.animehaytv.animehaytv.Exoplayer;
+
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.animehaytv.animehaytv.R;
+import com.github.rtoshiro.view.video.FullscreenVideoLayout;
+
+import java.io.IOException;
+
+/**
+ * Created by sev_user on 05/08/2018.
+ */
+
+public class VideoView_Fragment extends Fragment {
+    View view;
+
+    FullscreenVideoLayout videoLayout;
+
+    AppCompatActivity activity;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        view = inflater.inflate(R.layout.fragment_videoview, container, false);
+
+        activity = (AppCompatActivity) view.getContext();
+
+
+        videoLayout = view.findViewById(R.id.videoview);
+
+        videoLayout.setActivity(getActivity());
+        videoLayout.setShouldAutoplay(true);
+
+        loadVideo();
+
+        return view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        videoLayout.resize();
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+    }
+
+    public void loadVideo() {
+
+        String URL = getArguments().getStringArrayList("listURL").get(0);
+
+        Uri videoUri = Uri.parse(URL);
+        try {
+            videoLayout.setVideoURI(videoUri);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public boolean isFullscreen() {
+
+        if (videoLayout == null)
+            videoLayout = (FullscreenVideoLayout) view.findViewById(R.id.videoview);
+        
+        return videoLayout != null ? videoLayout.isFullscreen() : false;
+    }
+
+    public void setFullScreen(boolean b) {
+
+        if (videoLayout == null)
+            videoLayout = (FullscreenVideoLayout) view.findViewById(R.id.videoview);
+        
+        videoLayout.setFullscreen(b);
+    }
+
+}
