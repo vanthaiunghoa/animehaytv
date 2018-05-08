@@ -1,0 +1,58 @@
+ Episode_Fragment episodeFragment = (Episode_Fragment) getSupportFragmentManager().findFragmentByTag("Episode_Fragment");
+        Exoplayer_Fragment exoplayerFragment = (Exoplayer_Fragment) getSupportFragmentManager().findFragmentByTag("Exoplayer_Fragment");
+        VideoView_Fragment videoView_fragment = (VideoView_Fragment) getSupportFragmentManager().findFragmentByTag("VideoView_Fragment");
+
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+
+            int totalFragmentsInBackstack = getSupportFragmentManager().getBackStackEntryCount();
+            if (totalFragmentsInBackstack == 0) {
+                if (twice == true) {
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                    System.exit(0);
+                }
+                twice = true;
+
+                Toast.makeText(getApplicationContext(), "Press back again to exit !", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        twice = false;
+                    }
+                }, 3000);
+            } else if (episodeFragment != null && episodeFragment.isVisible()) {
+
+                if (exoplayerFragment != null && exoplayerFragment.isVisible()) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().remove(exoplayerFragment)
+                            .commit();
+
+                    super.onBackPressed();
+
+                } else if (videoView_fragment != null && videoView_fragment.isVisible()) {
+
+                    if (videoView_fragment.isFullscreen()) {
+
+                        videoView_fragment.setFullScreen(false);
+
+                    } else {
+
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().remove(videoView_fragment)
+                                .commit();
+
+                        super.onBackPressed();
+                    }
+                }
+
+            } else {
+
+                super.onBackPressed();
+            }
+
+        }
