@@ -1,0 +1,66 @@
+ Element relation = doc.select("div.ah-pif-relation").first();
+                            if (relation != null) {
+                                Elements a_relation = relation.select("a");
+                                if (a_relation != null && a_relation.size() > 0) {
+                                    for (Element item_relation : a_relation) {
+                                        String tenlienquan = "", linkthongtinphimlienquan = "";
+                                        boolean isActive = false;
+
+                                        tenlienquan = item_relation.text();
+                                        linkthongtinphimlienquan = "http://animehay.tv/phim/" + item_relation.attr("href");
+                                        if (item_relation.hasClass("active"))
+                                            isActive = true;
+
+                                        ChiTietPhim_LienQuan_Model c = new ChiTietPhim_LienQuan_Model();
+                                        c.setTenlienquan(tenlienquan);
+                                        c.setLinkthongtinphimlienquan(linkthongtinphimlienquan);
+                                        c.setActive(isActive);
+
+                                        Log.d("TESTAPI",tenlienquan+"\n"+linkthongtinphimlienquan+"\n"+isActive+"\n");
+
+                                    }
+                                }
+                            }
+                            
+                            
+                            
+                            
+                            
+public class ChiTietPhim_LienQuan_Model {
+    private String tenlienquan;
+    private String linkthongtinphimlienquan;
+    private boolean isActive;
+
+    public ChiTietPhim_LienQuan_Model() {
+    }
+
+    public ChiTietPhim_LienQuan_Model(String tenlienquan, String linkthongtinphimlienquan, boolean isActive) {
+        this.tenlienquan = tenlienquan;
+        this.linkthongtinphimlienquan = linkthongtinphimlienquan;
+        this.isActive = isActive;
+    }
+
+    public String getTenlienquan() {
+        return tenlienquan;
+    }
+
+    public void setTenlienquan(String tenlienquan) {
+        this.tenlienquan = tenlienquan;
+    }
+
+    public String getLinkthongtinphimlienquan() {
+        return linkthongtinphimlienquan;
+    }
+
+    public void setLinkthongtinphimlienquan(String linkthongtinphimlienquan) {
+        this.linkthongtinphimlienquan = linkthongtinphimlienquan;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+}
