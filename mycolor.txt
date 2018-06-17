@@ -1,0 +1,10 @@
+## Home Page
+colorLayoutBackground = #4a4a4a
+colorCardviewMovieBackground = #2b2b2b
+colorTitleReleaseRecent= #dacb45
+colorNameMovie = #ce8e40
+
+## Detail Movie
+colorTitleInforDetailMovie= #5A5454
+colorBtnWatchDetailMovie = #9a3f3f or #b13f3f
+colorTitleMovieDetailMovie= #bbcad0
