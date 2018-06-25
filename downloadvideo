@@ -1,3 +1,5 @@
+ https://github.com/anugotta/DownloadManagerExample/blob/master/app/src/main/java/com/gadgetsaint/downloadmanagerexample/MainActivity.java
+ 
  //Check if internet is present or not
     private boolean isConnectingToInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
