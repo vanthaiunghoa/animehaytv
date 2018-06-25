@@ -1,0 +1,50 @@
+ //Check if internet is present or not
+    private boolean isConnectingToInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(WatchingMovieActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                ActivityCompat.requestPermissions(WatchingMovieActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                Toast.makeText(this, "Accept permissions for download video ! ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+    
+    
+    ////
+    
+    
+     if (isConnectingToInternet()) {
+//                        DownloadHelper downloadHelper = new DownloadHelper(WatchingMovieActivity.this);
+//                        downloadHelper.downloadVideo(link);
+
+                        DownloadManager.Request request=new
+                                DownloadManager.Request(Uri.parse(link));
+                        request.setTitle("download");
+                        request.setDescription("your file is downloading ...");
+                        request.allowScanningByMediaScanner();
+                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                        request.setDestinationInExternalFilesDir(WatchingMovieActivity.this, Environment.DIRECTORY_DOWNLOADS,"testing.mp4");
+
+                        DownloadManager manager =(DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
+                        manager.enqueue(request);
+
+                    } else {
+                        Toast.makeText(WatchingMovieActivity.this, "Oops!! There is no internet connection. Please enable internet connection and try again.", Toast.LENGTH_SHORT).show();
+                    }
