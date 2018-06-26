@@ -1,0 +1,9 @@
+regext video
+  Pattern PATTERN = Pattern.compile("\"file\":\"([^}]+)\"");
+                        Matcher matcher = PATTERN.matcher(response);
+
+                        while (matcher.find())
+                        {
+                            Log.d("TESTTEST",response.substring(matcher.start(0),
+                                    matcher.end(0)));
+                        }
